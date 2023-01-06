@@ -1,0 +1,77 @@
+# API
+
+$baseUrl = http://localhost:3000/api
+
+declaration = {
+	id,
+	status: pending | completed,
+	afm_symbolaiografou,
+	{
+		id_akinhto,
+		kathgoria,
+		perigrafh,
+		afm_idioktiti
+	},
+	afm_seller,
+	afm_buyer,
+	{
+		// ?
+		calculation_sheet
+	},
+	status_seller,
+	status_buyer,
+	{
+		taytothta_ofeilhs
+	},
+	{
+		contract ...
+	}	
+}
+
+## Login
+
+POST baseUrl/login : {username, password} : STATUS CODE
+
+### Συμβολαιογράφος
+
+GET baseurl/declaration : {loginid} : [... {... , status: pending | completed}]
+
+POST baseUrl/declaration : {...} : STATUS CODE
+
+POST baseUrl/declaration/:id/contract : { contract } : STATUS CODE
+	- θα πρέπει να έχει πληρωθεί ο φόρος και να έχει γίνει υποβολή από αγοραστή και από πωλητή
+	- declaration/:id SET { status: completed }
+
+### Αγοραστή
+
+GET baseurl/declaration : {loginid} : [... {... , status: pending | completed}]
+
+POST baseUrl/declaration/:id/buyerAccept : { boolean } : STATUS CODE
+
+POST baseUrl/declaration/:id/pay : { boolean } : STATUS CODE
+
+### Πωλητής
+
+GET baseurl/declaration : {loginid} : [... {... , status: pending | completed}]
+
+POST baseUrl/declaration/:id/sellerAccept : { boolean } : STATUS CODE
+
+## Administration
+
+$adminUrl = http://localhost:3000/admin
+
+### Users
+
+POST $adminUrl/user : {user} : STATUS CODE
+PUT $adminUrl/user/:id : {modifiedUser} : STATUS CODE
+DELETE $adminUrl/user/:id : {} : STATUS CODE
+
+### Roles
+
+POST $adminUrl/role : {role} : STATUS CODE
+DELETE $adminUrl/role : {} : STATUS CODE
+
+### Services
+
+POST $adminUrl/service : {service} : STATUS CODE
+POST $adminUrl/service: {} : STATUS CODE
