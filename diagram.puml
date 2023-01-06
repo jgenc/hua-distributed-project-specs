@@ -1,0 +1,44 @@
+@startuml
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!include DEVICONS/angular.puml
+!include DEVICONS/java.puml
+!include DEVICONS/msql_server.puml
+!include FONTAWESOME/users.puml
+
+' LAYOUT_WITH_LEGEND()
+
+Person(general_user, "User", "All users follow")
+Person(buyer, "Αγοραστής", "Δέχεται ή όχι την δήλωση και πληρώνει τον φόρο")
+Person(seller, "Πωλητής", "Δέχεται ή όχι την δήλωση")
+Person(contractor, "Συμβολαιογράφος", "Δημιουργεί την δήλωση και ανεβάζει το συμβόλαιο")
+Person(admin, "Διαχειριστής", "Διαχειρίζεται το σύστημα χρηστών")
+
+System_Boundary(c1, "Σύστημα δήλωσης φόρου μεταβίβασης ακινήτου") {
+	Container(web_app, "Web Application", "nodejs", "Delivers Single-Page application")
+	Container(single_page_app, "Single-Page Application", "SolidJS", "Provides User Functionality")
+	Container(admin_spa, "Admin SPA", "SolidJS", "Admin Interface which is used to moderate users and their roles")
+	ContainerDb(db, "Database", "PostgreSQL", "User Info, Hashed Authentication, Δηλώσεις, Ακίνητα, Συμβόλαια")
+	Container(backend, "API Application", "Spring", "Spring Backend Service which handles Frontend API calls")
+}
+
+Rel(general_user, web_app, "site.com", "HTTPS")
+
+Rel(buyer, single_page_app, "Αποδοχή ή μη της δήλωσης")
+' Rel(buyer, web_app, "site.com", "HTTPS")
+Rel(seller, single_page_app, "Αποδοχή ή μη της δήλωσης")
+Rel(seller, single_page_app, "Πληρωμή Φόρου")
+' Rel(seller, web_app, "site.com", "HTTPS")
+Rel(contractor, single_page_app, "Δημιουργία Δήλωσης")
+' Rel(contractor, web_app, "site.com", "HTTPS")
+
+Rel(web_app, single_page_app, "Delivers")
+Rel(single_page_app, backend, "API Calls")
+Rel(backend, db, "JDBC")
+
+Rel(admin, admin_spa, "Uses")
+
+@enduml
