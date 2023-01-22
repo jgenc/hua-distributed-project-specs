@@ -1,0 +1,32 @@
+@startuml login
+
+title Log In
+
+actor User
+participant Frontend
+participant Backend
+database Database
+
+User -> Frontend ++: Access Home Site
+Frontend --> User --: Provide Home Page
+User -> Frontend ++: Click login
+Frontend --> User --: Redirect to '/login', providing a form
+User -> Frontend ++: Provide user credentials
+
+Frontend -> Backend ++: POST /api/login
+Backend -> Database ++: Search user's password hash
+Database --> Backend --: Return user's password hash
+Backend -> Backend: Check if provided password is correct
+
+alt Successful
+	Backend -> Backend: Generate JWT
+	Backend --> Frontend --: Return JWT
+else Unsuccessful
+	Backend -> Backend++: Generate error message
+	Backend --> Frontend--: Return error message
+end
+
+
+Frontend --> User --: Notify user if credentials are incorrect or redirect
+
+@enduml

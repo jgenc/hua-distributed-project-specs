@@ -1,0 +1,44 @@
+@startuml user_access_declarations
+
+title Access Declarations and Acceptance 
+
+actor User #SkyBlue
+participant Frontend
+participant Backend
+database Database
+
+User -> Frontend ++: See Declarations Button
+
+Frontend -> Backend ++: GET /api/declaration + JWT
+Backend -> Backend: Validate JWT
+
+Backend -> Database ++: Fetch all user's Declarations
+Database --> Backend --: Data
+
+Backend -> Frontend --: All declarations of user
+
+Frontend --> User --: Show all declarations
+
+User -> Frontend ++: Click one declaration
+Frontend --> User --: Show declaration's data
+
+User -> Frontend ++: Submit acceptance
+
+Frontend -> Backend ++: POST /api/declaration/accept/:id + JWT
+Backend -> Backend: Validate JWT
+
+Backend -> Database ++: Update user's accept field on declaration found by id
+Database -> Backend --: Update message
+
+Backend -> Frontend --: Acceptance message
+
+alt unsuccessful
+	Frontend -> User: Notify user of error
+end
+
+Frontend -> Frontend: Update declaration's data and store
+Frontend -> User --: Notify user of Declaration Acceptance Success
+
+
+
+@enduml

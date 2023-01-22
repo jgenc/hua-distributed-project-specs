@@ -1,0 +1,29 @@
+@startuml create_declaration
+
+title Notary Decalration Creation
+
+actor Notary #blue
+participant Frontend
+participant Backend
+database Database
+
+Notary -> Frontend ++: Create New Declaration Button
+Frontend --> Notary --: Form of New Declaration
+
+Notary -> Frontend ++: Submit New Declaration
+Frontend -> Backend ++: POST /api/declaration with Declaration JSON 
+Backend -> Backend: Validate JWT (Notary)
+Backend -> Backend: Validate Declaration JSON attributes
+
+Backend -> Database ++: Save New Declaration
+Database --> Backend --: Create message
+
+Backend --> Frontend: Creation Successful/Unsuccessful Message
+
+alt Successful
+	Frontend -> Frontend: Update declaration store
+end
+
+Frontend --> Notary --: Notify user of successful or unsuccessful operation
+
+@enduml

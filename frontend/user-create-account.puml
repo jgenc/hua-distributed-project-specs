@@ -1,0 +1,32 @@
+@startuml create_declaration
+
+title First Time Login for User
+
+actor User #Green
+participant Frontend
+participant Backend
+database Database
+
+activate Frontend
+Frontend -> User: Redirecting to "/account"
+Frontend -> User: Account creation Form
+deactivate Frontend
+
+User -> Frontend ++: Submit form (FirstName etc.)
+Frontend -> Backend ++: POST /api/person + account JSON + JWT
+Backend -> Backend: Validate JWT
+Backend -> Backend: Validate new account information
+Backend -> Database ++: Save new account
+Database --> Backend --: Create message
+
+Backend -> Frontend --: Return successful/unsuccessful message
+
+alt unsuccessful
+	Frontend -> User: Notify user for unsuccessful account creation
+end
+
+Frontend -> Frontend: Update account store
+Frontend -> User: Redirect to "/"
+deactivate Frontend
+
+@enduml
