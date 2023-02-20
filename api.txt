@@ -34,7 +34,7 @@ POST baseUrl/login : {username, password} : STATUS CODE
 
 ### Συμβολαιογράφος
 
-GET baseurl/declaration : {loginid} : [... {... , status: pending | completed}]
+GET baseurl/declaration : {loginId} : [... {... , status: pending | completed}]
 
 POST baseUrl/declaration : {...} : STATUS CODE
 
